@@ -5,6 +5,7 @@ if (!process.env.SENDGRID_API_KEY) {
   console.error('❌ SENDGRID_API_KEY is not defined!');
 } else {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log('✅ SendGrid API key set');
 }
 
 // CC Email addresses
@@ -544,6 +545,7 @@ const getPurchaseStatusEmail = (data) => ({
 export const sendServiceRequestEmails = async (data) => {
   console.log('📧 Sending service request emails...');
   console.log('API Key exists:', !!process.env.SENDGRID_API_KEY);
+  console.log('From email:', process.env.FROM_EMAIL);
 
   try {
     await sgMail.send(getServiceRequestCustomerEmail(data));
@@ -583,23 +585,33 @@ export const sendRentalRequestEmails = async (data) => {
 };
 
 export const sendDeviceReceivedEmail = async (data) => {
+  console.log('📧 Sending device received email...');
+
   try {
     await sgMail.send(getDeviceReceivedEmail(data));
     console.log(`✅ Device received email sent to ${data.email}`);
     return { success: true };
   } catch (error) {
     console.error('❌ Device received email error:', error.message);
+    if (error.response) {
+      console.error('Response body:', JSON.stringify(error.response.body));
+    }
     return { success: false, error: error.message };
   }
 };
 
 export const sendPriceQuoteEmail = async (data) => {
+  console.log('📧 Sending price quote email...');
+
   try {
     await sgMail.send(getPriceQuoteEmail(data));
     console.log(`✅ Price quote email sent to ${data.email}`);
     return { success: true };
   } catch (error) {
     console.error('❌ Price quote email error:', error.message);
+    if (error.response) {
+      console.error('Response body:', JSON.stringify(error.response.body));
+    }
     return { success: false, error: error.message };
   }
 };
@@ -625,6 +637,8 @@ export const sendPurchaseCreatedEmail = async (data) => {
 };
 
 export const sendPurchaseStatusEmail = async (data) => {
+  console.log('📧 Sending purchase status email...');
+
   const statusLabels = {
     pending: 'Ödeme Bekleniyor',
     confirmed: 'Ödeme Onaylandı',
@@ -643,6 +657,9 @@ export const sendPurchaseStatusEmail = async (data) => {
     return { success: true };
   } catch (error) {
     console.error('❌ Purchase status email error:', error.message);
+    if (error.response) {
+      console.error('Response body:', JSON.stringify(error.response.body));
+    }
     return { success: false, error: error.message };
   }
 };
