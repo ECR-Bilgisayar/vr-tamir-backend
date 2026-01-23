@@ -1,6 +1,15 @@
+import express from 'express';
+import supabase from '../config/supabase.js';
 import { sendPurchaseCreatedEmail } from '../services/emailService.js';
 
-// ... existing code ...
+const router = express.Router();
+
+// Generate unique purchase ID
+const generatePurchaseId = () => {
+    const year = new Date().getFullYear();
+    const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+    return `PUR-${year}-${random}`;
+};
 
 // Create new purchase request
 router.post('/', async (req, res) => {
