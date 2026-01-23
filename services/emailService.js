@@ -8,8 +8,8 @@ if (!process.env.SENDGRID_API_KEY) {
   console.log('✅ SendGrid API key set');
 }
 
-// CC Email addresses
-const CC_EMAILS = [process.env.CC_EMAIL, 'info@etkinlikbilgisayar.com'].filter(Boolean);
+
+const CC_EMAILS = [process.env.CC_EMAIL].filter(Boolean);
 
 // Email templates
 const getServiceRequestCustomerEmail = (data) => ({
